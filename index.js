@@ -1,5 +1,5 @@
 $(document).ready(() => {
-  let username = "";
+  let username = "" || localStorage.getItem("username");
   let results = [];
   let selectedAnswers = {};
 
@@ -125,6 +125,7 @@ $(document).ready(() => {
     if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
       if (usernameInput.val()) {
         username = usernameInput.val();
+        localStorage.setItem("username", username);
 
         toggleUsernameModal();
         getQuizDetails();
@@ -157,6 +158,17 @@ $(document).ready(() => {
       alert("Please answer all questions");
     }
   };
+
+  if (username) {
+    modal.hide();
+    if(confirm('Do you wana continue as '+username+'?')){
+      getQuizDetails();
+    }
+    else{
+      localStorage.clear();
+      location.reload();
+    }
+  }
 
   // Bind events
   usernameInput.on("keypress", getUsername);
